@@ -14,6 +14,7 @@ namespace EmployeeTracker.Web.Controllers
     public class ArrivalsController : ApiController
     {
        
+
         [HttpPost]
         public IHttpActionResult Post([FromBody]IEnumerable<EmployeeArrival> arrivals)
         {
