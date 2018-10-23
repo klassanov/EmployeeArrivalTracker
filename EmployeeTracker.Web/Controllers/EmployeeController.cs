@@ -29,6 +29,12 @@ namespace EmployeeTracker.Web.Controllers
             return View();
         }
 
+        public ViewResult Arrivals()
+        {
+            IEnumerable<EmployeeArrival> arrivalsList=repository.GetEmployeeArrivals();
+            return View(arrivalsList);
+        }
+
         [HttpPost]
         public void Post(IEnumerable<EmployeeArrival> arrivals)
         {

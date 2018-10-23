@@ -1,0 +1,27 @@
+﻿@model IEnumerable<EmployeeTracker.Domain.Model.EmployeeArrival>
+
+@{
+    ViewBag.Title = "Employees Arrivals";
+}
+
+<h2>Employees Arrivals</h2>
+
+
+<table class="table table-striped" id="arrivalsTable">
+    <tr>
+        <th>Employee Id</th>
+        <th>Arrival Date &amp; Time</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.When)
+            </td>
+        </tr>
+    }
+</table>
