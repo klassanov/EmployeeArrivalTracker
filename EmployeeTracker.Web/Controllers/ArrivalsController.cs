@@ -15,13 +15,7 @@ namespace EmployeeTracker.Web.Controllers
 
     public class ArrivalsController : ApiController
     {
-        [Inject]
         public IArrivalsRepository repository { get; set; }
-
-        //public ArrivalsController(IArrivalsRepository arrivalsRepository)
-        //{
-        //    this.repo = arrivalsRepository;
-        //}
 
         [HttpGet]
         public IHttpActionResult Get()

@@ -3,6 +3,7 @@ using EmployeeTracker.Domain.Model;
 using EmployeeTracker.Web.Helpers;
 using Flurl.Http;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Net.Http;
@@ -24,34 +25,48 @@ namespace EmployeeTracker.Web.Controllers
 
         public ActionResult Index()
         {
+            //HttpContext.Items
             return View();
         }
 
         [HttpPost]
         public void Post(IEnumerable<EmployeeArrival> arrivals)
         {
-            string header = ConfigurationManager.AppSettings["ServicePostRequestTokenHeader"];
-            string tokenValue = Request.Headers[header];
-
-            EmployeesArrivalsDataHelper helper = new EmployeesArrivalsDataHelper();
-            helper.HandleEmployeesArrivalsData(tokenValue, arrivals, tokenHelper);
+            string xFourthTokenHeader = ConfigurationManager.AppSettings["xFourthTokenHeader"];
+            string tokenValue = Request.Headers[xFourthTokenHeader];
+          
+            EmployeeArrivalPostRequest postRequest = new EmployeeArrivalPostRequest
+            {
+                ReceiveDateTime=DateTime.Now,
+                IsValid= tokenHelper.CheckToken(tokenValue),
+                TokenValue=tokenValue
+            };
+            repository.WriteArrivalPostRequest(postRequest, arrivals);
         }
 
         public async Task<ViewResult> List()
         {
-            //throw new Exception("test");
+            EmployeeArrivalSubscriptionGetRequest subscriptionRequest = new EmployeeArrivalSubscriptionGetRequest();
+            subscriptionRequest.CallbackUrlParameter = "http://localhost:51396/api/clients/subscribe?date=2016-03-10&callback=http://localhost:61051/employee/Post";
+            subscriptionRequest.DateParameter = new DateTime(1985, 7, 23);
             HttpResponseMessage response = await GetServiceResponseMessage();
+            subscriptionRequest.ResponseStatusCode = (int)response.StatusCode;
+
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
                 SubscriptionToken subscriptionToken = JsonConvert.DeserializeObject<SubscriptionToken>(content);
                 tokenHelper.StoreToken(subscriptionToken);
-                
+                subscriptionRequest.SubscriptionTokenValue = subscriptionToken.Token;
+                subscriptionRequest.SubscriptionTokenExpiryDate = subscriptionToken.Expires;
             }
             else
             {
 
             }
+
+            repository.WriteSubscriptionRequest(subscriptionRequest);
+
             return View();
         }
 

@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,6 +44,8 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Model\EmployeeArrival.cs" />
+    <Compile Include="Model\EmployeeArrivalPostRequest.cs" />
+    <Compile Include="Model\EmployeeArrivalSubscriptionGetRequest.cs" />
     <Compile Include="Model\SubscriptionToken.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
