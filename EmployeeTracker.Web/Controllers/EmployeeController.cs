@@ -1,4 +1,5 @@
 ﻿using EmployeeTracker.DataAccess.Interfaces;
+using EmployeeTracker.Domain;
 using EmployeeTracker.Domain.Model;
 using EmployeeTracker.Web.Helpers;
 using Flurl.Http;
@@ -14,7 +15,6 @@ namespace EmployeeTracker.Web.Controllers
 {
     public class EmployeeController : Controller
     {
-
         private IArrivalsRepository repository;
         private ITokenHelper tokenHelper;
 
@@ -26,7 +26,6 @@ namespace EmployeeTracker.Web.Controllers
 
         public ActionResult Index()
         {
-            //HttpContext.Items
             return View();
         }
 
@@ -42,15 +41,34 @@ namespace EmployeeTracker.Web.Controllers
                 IsValid= tokenHelper.CheckToken(tokenValue),
                 TokenValue=tokenValue
             };
+
+            if (!postRequest.IsValid)
+            {
+                arrivals = null;
+            }
+
             repository.WriteArrivalPostRequest(postRequest, arrivals);
         }
 
         public async Task<ViewResult> List()
         {
+            //string url ="http://localhost:51396/api/clients/subscribe?date=2016-03-10&callback=http://localhost:61051/api/arrivals/Post";
+            //string url = "http://localhost:51396/api/clients/subscribe?date=2016-03-10&callback=http://localhost:61051/employee/Post";
+
+            DateTime dateParam = new DateTime(1985, 7, 23);
+
+            string url = string.Format("{0}?{1}={2}&{3}={4}",
+               ConfigurationManager.AppSettings["remoteServiceEndpointUrl"],
+               Constants.DATE,
+               dateParam.Date.ToString(ConfigurationManager.AppSettings["subscriptionRequestDateFormat"]),
+               Constants.CALLBACK,
+               ConfigurationManager.AppSettings["applicationServiceCallbackUrl"]);
+
             EmployeeArrivalSubscriptionGetRequest subscriptionRequest = new EmployeeArrivalSubscriptionGetRequest();
-            subscriptionRequest.CallbackUrlParameter = "http://localhost:51396/api/clients/subscribe?date=2016-03-10&callback=http://localhost:61051/employee/Post";
-            subscriptionRequest.DateParameter = new DateTime(1985, 7, 23);
-            HttpResponseMessage response = await GetServiceResponseMessage();
+            subscriptionRequest.CallbackUrlParameter = url;
+           
+            subscriptionRequest.DateParameter=dateParam;
+            HttpResponseMessage response = await GetServiceResponseMessage(url);
             subscriptionRequest.ResponseStatusCode = (int)response.StatusCode;
 
             if (response.IsSuccessStatusCode)
@@ -65,19 +83,14 @@ namespace EmployeeTracker.Web.Controllers
             {
 
             }
-
             repository.WriteSubscriptionRequest(subscriptionRequest);
-
             return View();
         }
 
-        private async Task<HttpResponseMessage> GetServiceResponseMessage()
+        private async Task<HttpResponseMessage> GetServiceResponseMessage(string url)
         {
-            //string url ="http://localhost:51396/api/clients/subscribe?date=2016-03-10&callback=http://localhost:61051/api/arrivals/Post";
-            string url = "http://localhost:51396/api/clients/subscribe?date=2016-03-10&callback=http://localhost:61051/employee/Post";
             string requestHeader = ConfigurationManager.AppSettings["ServiceRequestHeader"];
             string requestHeaderValue = ConfigurationManager.AppSettings["ServiceRequestHeaderValue"];
-
             HttpResponseMessage response = await url.WithHeader(requestHeader, requestHeaderValue).GetAsync();
             return response;
         }

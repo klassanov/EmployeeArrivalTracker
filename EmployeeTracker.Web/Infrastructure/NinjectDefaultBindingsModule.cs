@@ -11,6 +11,7 @@ namespace EmployeeTracker.Web.Infrastructure
         {
             Bind<IArrivalsRepository>().To<DefaultArrivalsRepository>();
             Bind<ITokenHelper>().To<SimpleTokenHelper>().InSingletonScope();
+            //Bind<ITokenHelper>().To<CacheTokenHelper>();
         }
     }
 }

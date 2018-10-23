@@ -207,6 +207,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CacheTokenHelper.cs" />
     <Compile Include="Helpers\ITokenHelper.cs" />
     <Compile Include="Helpers\SimpleTokenHelper.cs" />
     <Compile Include="Infrastructure\NinjectDefaultBindingsModule.cs" />

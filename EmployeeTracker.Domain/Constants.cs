@@ -8,8 +8,17 @@ namespace EmployeeTracker.Domain
 {
     public static class Constants
     {
+        #region MESSAGE KEYS
         public static readonly string MESSAGE_SUCCESS_KEY = "message_success";
         public static readonly string MESSAGE_ERROR_KEY = "message_error";
-        public static readonly string SERVICE_RESPONSE_KEY = "token_key";
+        #endregion
+
+
+        #region QUERY STRING KEYS
+        public static readonly string DATE = "date";
+        public static readonly string CALLBACK = "callback";
+        #endregion
+
+
     }
 }

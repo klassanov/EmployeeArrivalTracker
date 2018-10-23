@@ -29,7 +29,7 @@ namespace EmployeeTracker.DataAccess.Repositories
             using (var db = new EmployeeArrivalsContext())
             {
                 db.EmployeeArrivalsPostRequest.Add(request);
-                if (request.IsValid)
+                if(employeeArrivals!=null)
                 {
                     employeeArrivals.ToList().ForEach(x => x.Request = request);
                     db.EmployeeArrivals.AddRange(employeeArrivals);

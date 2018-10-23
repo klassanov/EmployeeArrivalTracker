@@ -12,22 +12,23 @@ namespace EmployeeTracker.Web.Helpers
 
         public bool CheckToken(string tokenValue)
         {
-            bool isValid = true;
+            bool isValid = false;
             if (subscriptionTokensDict.ContainsKey(tokenValue))
             {
                 SubscriptionToken token = subscriptionTokensDict[tokenValue];
-                if (token.Expires > DateTime.Now)
-                {
-                    isValid = true;
+                if (token.Expires < DateTime.Now)
+                { 
+                    isValid = false;
+                    subscriptionTokensDict.Remove(tokenValue);
                 }
                 else
                 {
-                    isValid = false;
-                    subscriptionTokensDict.Remove(tokenValue);
+                    isValid = true;
                 }
             }
             return isValid;
         }
+
         public void StoreToken(SubscriptionToken subscriptionToken)
         {
             if (subscriptionTokensDict.ContainsKey(subscriptionToken.Token))
