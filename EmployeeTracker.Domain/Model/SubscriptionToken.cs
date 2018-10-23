@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeTracker.Domain.Model
 {
-    public class SubscriptionResponse
+    public class SubscriptionToken
     {
         public string Token { get; set; }
         public DateTime Expires { get; set; }

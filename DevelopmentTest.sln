@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeTracker.Web", "Empl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeTracker.Domain", "EmployeeTracker.Domain\EmployeeTracker.Domain.csproj", "{EC04C439-F592-4FFF-9395-5E9F7BD9D710}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeTracker.DataAccess", "EmployeeTracker.DataAccess\EmployeeTracker.DataAccess.csproj", "{7E8AD336-39BB-4B6B-9D37-897D7B4B2462}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{EC04C439-F592-4FFF-9395-5E9F7BD9D710}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC04C439-F592-4FFF-9395-5E9F7BD9D710}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC04C439-F592-4FFF-9395-5E9F7BD9D710}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E8AD336-39BB-4B6B-9D37-897D7B4B2462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E8AD336-39BB-4B6B-9D37-897D7B4B2462}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E8AD336-39BB-4B6B-9D37-897D7B4B2462}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E8AD336-39BB-4B6B-9D37-897D7B4B2462}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

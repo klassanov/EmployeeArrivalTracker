@@ -1,5 +1,7 @@
-﻿using EmployeeTracker.Domain.Model;
+﻿using EmployeeTracker.DataAccess.Interfaces;
+using EmployeeTracker.Domain.Model;
 using Newtonsoft.Json.Linq;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,7 +15,19 @@ namespace EmployeeTracker.Web.Controllers
 
     public class ArrivalsController : ApiController
     {
-       
+        [Inject]
+        public IArrivalsRepository repository { get; set; }
+
+        //public ArrivalsController(IArrivalsRepository arrivalsRepository)
+        //{
+        //    this.repo = arrivalsRepository;
+        //}
+
+        [HttpGet]
+        public IHttpActionResult Get()
+        {
+            return Ok();
+        }
 
         [HttpPost]
         public IHttpActionResult Post([FromBody]IEnumerable<EmployeeArrival> arrivals)
