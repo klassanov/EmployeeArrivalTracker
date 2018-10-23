@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using EmployeeTracker.Web.CustomFilters;
+using System.Web;
 using System.Web.Mvc;
 
 namespace EmployeeTracker.Web
@@ -7,7 +8,9 @@ namespace EmployeeTracker.Web
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            //filters.Add(new HandleErrorAttribute());
+            filters.Add(new LogExceptionAttribute());
+            filters.Add(new ProfileAllAttribute());
         }
     }
 }

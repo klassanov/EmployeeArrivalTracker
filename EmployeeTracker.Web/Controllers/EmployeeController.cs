@@ -24,12 +24,12 @@ namespace EmployeeTracker.Web.Controllers
 
         public async Task<ViewResult> List()
         {
+            throw new Exception("test");
             HttpResponseMessage response = await GetServiceResponseMessage();
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
                 SubscriptionResponse subscriptionResponse = JsonConvert.DeserializeObject<SubscriptionResponse>(content);
-                Session[Constants.SERVICE_RESPONSE_KEY] = subscriptionResponse;
             }
             else
             {

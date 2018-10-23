@@ -18,6 +18,7 @@ namespace EmployeeTracker.Web.Controllers
         [HttpPost]
         public IHttpActionResult Post([FromBody]IEnumerable<EmployeeArrival> arrivals)
         {
+            //throw new Exception("Test");
             IEnumerable<string> headerValues;
             string header = ConfigurationManager.AppSettings["ServicePostRequestTokenHeader"];
             if (Request.Headers.TryGetValues(header, out headerValues))
