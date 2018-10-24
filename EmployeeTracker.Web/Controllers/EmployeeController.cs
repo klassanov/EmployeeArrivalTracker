@@ -46,18 +46,18 @@ namespace EmployeeTracker.Web.Controllers
                     tokenHelper.StoreToken(subscriptionToken);
                     subscriptionRequest.SubscriptionTokenValue = subscriptionToken.Token;
                     subscriptionRequest.SubscriptionTokenExpiryDate = subscriptionToken.Expires;
-                    TempData[Constants.MESSAGE_SUCCESS_KEY] = Resources.msg_subscription_successful;
+                    ViewData[Constants.MESSAGE_SUCCESS_KEY] = Resources.msg_subscription_successful;
                 }
                 else
                 {
-                    TempData[Constants.MESSAGE_ERROR_KEY] = string.Format("{0} Response: {1} {2}",
+                    ViewData[Constants.MESSAGE_ERROR_KEY] = string.Format("{0} Response: {1} {2}",
                         Resources.msg_subscription_not_successful, response.StatusCode, response.ReasonPhrase);
                 }
                 repository.WriteSubscriptionRequest(subscriptionRequest);                
             }
             else
             {
-                TempData[Constants.MESSAGE_ERROR_KEY] = Resources.msg_subscription_not_successful;
+                ViewData[Constants.MESSAGE_ERROR_KEY] = Resources.msg_subscription_not_successful;
             }
             return View();
         }
@@ -101,44 +101,12 @@ namespace EmployeeTracker.Web.Controllers
             repository.WriteArrivalPostRequest(postRequest, arrivals);
         }
 
-        /*
-        public async Task<ViewResult> List()
-        {
-            //string url ="http://localhost:51396/api/clients/subscribe?date=2016-03-10&callback=http://localhost:61051/api/arrivals/Post";
-            //string url = "http://localhost:51396/api/clients/subscribe?date=2016-03-10&callback=http://localhost:61051/employee/Post";
-
-            DateTime dateParam = new DateTime(1985, 7, 23);
-
-            string url = CreateUrlString(dateParam);
-
-            EmployeeArrivalSubscriptionGetRequest subscriptionRequest = new EmployeeArrivalSubscriptionGetRequest();
-            subscriptionRequest.CallbackUrlParameter = url;
-            subscriptionRequest.DateParameter = dateParam;
-            HttpResponseMessage response = await GetServiceResponseMessage(url);
-            subscriptionRequest.ResponseStatusCode = (int)response.StatusCode;
-
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                SubscriptionToken subscriptionToken = JsonConvert.DeserializeObject<SubscriptionToken>(content);
-                tokenHelper.StoreToken(subscriptionToken);
-                subscriptionRequest.SubscriptionTokenValue = subscriptionToken.Token;
-                subscriptionRequest.SubscriptionTokenExpiryDate = subscriptionToken.Expires;
-            }
-            else
-            {
-
-            }
-            repository.WriteSubscriptionRequest(subscriptionRequest);
-            return View();
-        }
-        */
-
         private async Task<HttpResponseMessage> GetServiceResponseMessage(string url)
         {
             string requestHeader = ConfigurationManager.AppSettings["ServiceRequestHeader"];
             string requestHeaderValue = ConfigurationManager.AppSettings["ServiceRequestHeaderValue"];
             HttpResponseMessage response = await url.WithHeader(requestHeader, requestHeaderValue).GetAsync();
+            //HttpResponseMessage response = await url.GetAsync();
             return response;
         }
 

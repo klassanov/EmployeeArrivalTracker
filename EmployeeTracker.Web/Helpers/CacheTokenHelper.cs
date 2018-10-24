@@ -19,8 +19,7 @@ namespace EmployeeTracker.Web.Helpers
 
         public bool CheckToken(string tokenValue)
         {
-            SubscriptionToken token = cache[Constants.FOURTH_TOKEN_KEY] as SubscriptionToken;
-            return token != null && token.Token.Equals(tokenValue);
+            return cache[Constants.FOURTH_TOKEN_KEY] is SubscriptionToken token && token.Token.Equals(tokenValue);
         }
 
         public void StoreToken(SubscriptionToken subscriptionToken)
