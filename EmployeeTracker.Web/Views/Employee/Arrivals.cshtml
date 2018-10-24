@@ -5,34 +5,27 @@
 }
 
 <h2>Employees Arrivals</h2>
-<br />
 
-<table class="table table-striped table-hover table-condensed table-bordered userInfoTable" id="arrivalsTable">
-    <thead>
-        <tr>
-            <th>Employee Id</th>
-            <th>Arrival Date &amp; Time</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="userTableWrapper">
+    <table class="table table-striped table-hover table-condensed table-bordered userInfoTable">
+        <thead>
             <tr>
-                <td>
-                    @item.EmployeeId                  
-                </td>
-                <td>
-                    @item.When.ToString("dd-MMMM-yyyy HH:mm:ss")                   
-                </td>
+                <th>Employee Id</th>
+                <th>Arrival Date &amp; Time</th>
             </tr>
-        }
-    </tbody>
-</table>
-
-@section scripts{
-    <script>
-        $(document).ready(function () {
-            $('.userInfoTable').DataTable();
-        });
-    </script>
-}
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.EmployeeId
+                    </td>
+                    <td>
+                        @item.When.ToString("dd-MMMM-yyyy HH:mm:ss")
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

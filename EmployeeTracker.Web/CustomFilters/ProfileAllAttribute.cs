@@ -17,8 +17,8 @@ namespace EmployeeTracker.Web.CustomFilters
         public override void OnResultExecuted(ResultExecutedContext filterContext)
         {
             timer.Stop();
-            Logger.DebugFormat("Controller: {0}; Action:{1}; Total elapsed time: {2}s",
-                filterContext.Controller, filterContext.RouteData.Values["action"].ToString(), timer.Elapsed.Seconds);
+            Logger.DebugFormat("Controller: {0}; Action:{1}; Total elapsed time: {2}ms",
+                filterContext.Controller, filterContext.RouteData.Values["action"].ToString(), timer.Elapsed.Milliseconds);
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)

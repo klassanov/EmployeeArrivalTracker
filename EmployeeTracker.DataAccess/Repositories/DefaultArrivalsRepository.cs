@@ -14,14 +14,17 @@ namespace EmployeeTracker.DataAccess.Repositories
     {
         private static ILog logger = LogManager.GetLogger(typeof(DefaultArrivalsRepository));
 
-        public IEnumerable<EmployeeArrival> GetEmployeeArrivals()
+        public IEnumerable<T> GetAll<T>(Func<T, bool> wherePredicate=null) where T: class
         {
-            IEnumerable<EmployeeArrival> employeeArrivals = null;
+            IEnumerable<T> result = null;
             using (var db = new EmployeeArrivalsContext())
             {
-                employeeArrivals = db.EmployeeArrivals.OrderBy(x => x.When).ThenBy(x => x.EmployeeId).ToList();
+                result=wherePredicate !=null
+                    ?db.Set<T>().Where(wherePredicate).ToList()
+                    :db.Set<T>().ToList();                
             }
-            return employeeArrivals;
+            logger.DebugFormat("{0} {1} entities retrieved", result.Count(), typeof(T).Name);
+            return result;
         }
 
         public void WriteArrivalPostRequest(EmployeeArrivalPostRequest request, IEnumerable<EmployeeArrival> employeeArrivals)
@@ -36,6 +39,7 @@ namespace EmployeeTracker.DataAccess.Repositories
                 }
                 db.SaveChanges();
             }
+            logger.DebugFormat("Saved EmployeeArrivalPostRequest with id {0}", request.Id);
         }
 
         public void WriteSubscriptionRequest(EmployeeArrivalSubscriptionGetRequest request)

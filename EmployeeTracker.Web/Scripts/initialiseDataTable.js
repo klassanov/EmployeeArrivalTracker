@@ -1,0 +1,3 @@
+﻿$('.userInfoTable').dataTable({
+    "processing": true    
+});

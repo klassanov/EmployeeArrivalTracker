@@ -1,0 +1,28 @@
+﻿@model IEnumerable<EmployeeTracker.Domain.Model.EmployeeArrivalPostRequest>
+
+@{
+    ViewBag.Title = "Post Requests";
+}
+
+<h2>Post Requests Received From WebService</h2>
+<div class="userTableWrapper">
+    <table class="table table-striped table-hover table-condensed table-bordered userInfoTable">
+        <thead>
+            <tr>
+                <th>Date &amp; Time of Reception</th>
+                <th>Token Validity</th>
+                <th>Token Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ReceiveDateTime.ToString("dd-MMMM-yyyy HH:mm:ss")</td>
+                    <td>@item.IsValid</td>
+                    <td>@item.TokenValue</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

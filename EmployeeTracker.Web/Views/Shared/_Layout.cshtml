@@ -19,8 +19,9 @@
                 @Html.ActionLink("Employees Arrival Tracker", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">                   
+                <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Employees arrivals", "Arrivals", "Employee")</li>
+                    <li>@Html.ActionLink("Post requests", "PostRequests", "Employee")</li>
                 </ul>
             </div>
         </div>
@@ -35,6 +36,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/datatables")
     @RenderSection("scripts", required: false)
 </body>
 </html>

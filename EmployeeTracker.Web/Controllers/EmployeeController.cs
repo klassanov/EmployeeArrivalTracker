@@ -31,8 +31,14 @@ namespace EmployeeTracker.Web.Controllers
 
         public ViewResult Arrivals()
         {
-            IEnumerable<EmployeeArrival> arrivalsList=repository.GetEmployeeArrivals();
+            IEnumerable<EmployeeArrival> arrivalsList = repository.GetAll<EmployeeArrival>();
             return View(arrivalsList);
+        }
+
+        public ViewResult PostRequests()
+        {
+            IEnumerable<EmployeeArrivalPostRequest> postRequests = repository.GetAll<EmployeeArrivalPostRequest>();
+            return View(postRequests);
         }
 
         [HttpPost]
@@ -40,12 +46,12 @@ namespace EmployeeTracker.Web.Controllers
         {
             string xFourthTokenHeader = ConfigurationManager.AppSettings["xFourthTokenHeader"];
             string tokenValue = Request.Headers[xFourthTokenHeader];
-          
+
             EmployeeArrivalPostRequest postRequest = new EmployeeArrivalPostRequest
             {
-                ReceiveDateTime=DateTime.Now,
-                IsValid= tokenHelper.CheckToken(tokenValue),
-                TokenValue=tokenValue
+                ReceiveDateTime = DateTime.Now,
+                IsValid = tokenHelper.CheckToken(tokenValue),
+                TokenValue = tokenValue
             };
 
             if (!postRequest.IsValid)
@@ -72,8 +78,8 @@ namespace EmployeeTracker.Web.Controllers
 
             EmployeeArrivalSubscriptionGetRequest subscriptionRequest = new EmployeeArrivalSubscriptionGetRequest();
             subscriptionRequest.CallbackUrlParameter = url;
-           
-            subscriptionRequest.DateParameter=dateParam;
+
+            subscriptionRequest.DateParameter = dateParam;
             HttpResponseMessage response = await GetServiceResponseMessage(url);
             subscriptionRequest.ResponseStatusCode = (int)response.StatusCode;
 

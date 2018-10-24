@@ -11,6 +11,6 @@ namespace EmployeeTracker.DataAccess.Interfaces
     {
         void WriteSubscriptionRequest(EmployeeArrivalSubscriptionGetRequest request);
         void WriteArrivalPostRequest(EmployeeArrivalPostRequest request, IEnumerable<EmployeeArrival> employeeArrivals);
-        IEnumerable<EmployeeArrival> GetEmployeeArrivals();
+        IEnumerable<T> GetAll<T>(Func<T, bool> wherePredicate = null) where T : class;
     }
 }
