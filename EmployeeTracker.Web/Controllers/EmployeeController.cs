@@ -24,8 +24,22 @@ namespace EmployeeTracker.Web.Controllers
             this.tokenHelper = tokenHelper;
         }
 
-        public ActionResult Index()
+        public ViewResult Subscribe()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public ViewResult Subscribe(EmployeeArrivalSubscriptionGetRequest subscriptionRequest)
+        {
+            if(ModelState.IsValid)
+            {
+                TempData[Constants.MESSAGE_SUCCESS_KEY] = "Subscription successful!";
+            }
+            else
+            {
+                TempData[Constants.MESSAGE_ERROR_KEY] = "Subscription not successful!";
+            }
             return View();
         }
 

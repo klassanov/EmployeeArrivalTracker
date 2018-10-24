@@ -1,7 +1,58 @@
-﻿
+﻿@model EmployeeTracker.Domain.Model.EmployeeArrivalSubscriptionGetRequest
+
 @{
     ViewBag.Title = "Subscribe";
 }
 
 <h2>Subscribe</h2>
 
+
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        <h4>Subscribe to receive information about employees' arrivals for a date</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+       
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateParameter, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DateParameter, new { htmlAttributes = new { @class = "form-control", @id="datepicker" } })
+                @Html.ValidationMessageFor(model => model.DateParameter, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit"  class="btn btn-primary">
+                    <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Subscribe
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        @if (TempData[EmployeeTracker.Domain.Constants.MESSAGE_SUCCESS_KEY] != null)
+        {
+            <div class="alert alert-success">
+                @TempData[EmployeeTracker.Domain.Constants.MESSAGE_SUCCESS_KEY]
+            </div>
+            <div>
+                @Html.ActionLink("See the employees arrivals", "Arrivals")
+            </div>
+        }
+
+        @if (TempData[EmployeeTracker.Domain.Constants.MESSAGE_ERROR_KEY] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData[EmployeeTracker.Domain.Constants.MESSAGE_ERROR_KEY]
+            </div>
+        }
+    </div>
+
+}
+@section scripts{
+    <script>       
+        $("#datepicker").datepicker();
+        $("#datepicker").datepicker("option", "dateFormat", "dd-mm-yy");
+    </script>
+}
