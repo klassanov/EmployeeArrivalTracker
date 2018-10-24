@@ -18,7 +18,7 @@ namespace EmployeeTracker.Web.Controllers
         public IArrivalsRepository repository { get; set; }
 
         [HttpGet]
-        public IHttpActionResult Get()
+        public IHttpActionResult Test()
         {
             return Ok();
         }
@@ -26,27 +26,6 @@ namespace EmployeeTracker.Web.Controllers
         [HttpPost]
         public IHttpActionResult Post([FromBody]IEnumerable<EmployeeArrival> arrivals)
         {
-            //throw new Exception("Test");
-            IEnumerable<string> headerValues;
-            string header = ConfigurationManager.AppSettings["ServicePostRequestTokenHeader"];
-            if (Request.Headers.TryGetValues(header, out headerValues))
-            {
-                if(headerValues.FirstOrDefault()!=null)
-                {
-                    string token = headerValues.FirstOrDefault();
-
-                    //Save entities
-                    if(arrivals!=null)
-                    {
-                        foreach (EmployeeArrival arrival in arrivals)
-                        {
-
-                        }
-                    }
-                }
-            }
-
-
             return Ok();
         }
 
