@@ -1,0 +1,44 @@
+﻿@model IEnumerable<EmployeeTracker.Domain.Model.EmployeeArrivalSubscriptionGetRequest>
+
+@{
+    ViewBag.Title = "Subscriptions History";
+}
+
+<h2>Subscriptions History</h2>
+
+<div class="userTableWrapper">
+    <table class="table table-striped table-hover table-condensed table-bordered userInfoTable">
+        <thead>
+            <tr>
+                <th>Sending <br /> Date &amp;Time</th>
+                <th>Date parameter</th>
+                <th>Callback URL parameter</th>
+                <th>Response status code</th>
+                <th>Subscription token value</th>              
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.SendDateTime.ToString("dd-MMMM-yyyy HH:mm:ss")
+                    </td>
+                    <td>
+                        @item.DateParameter.ToString("dd-MMMM-yyyy")
+                    </td>
+                    <td>
+                        @item.CallbackUrlParameter
+                    </td>
+                    <td>
+                        @item.ResponseStatusCode
+                    </td>
+                    <td>
+                        @item.SubscriptionTokenValue
+                    </td>                  
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>

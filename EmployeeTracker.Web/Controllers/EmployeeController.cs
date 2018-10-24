@@ -41,6 +41,12 @@ namespace EmployeeTracker.Web.Controllers
             return View(postRequests);
         }
 
+        public ViewResult SubscriptionsHistory()
+        {
+            IEnumerable<EmployeeArrivalSubscriptionGetRequest> subscriptions=repository.GetAll<EmployeeArrivalSubscriptionGetRequest>();
+            return View(subscriptions);
+        }
+
         [HttpPost]
         public void Post(IEnumerable<EmployeeArrival> arrivals)
         {

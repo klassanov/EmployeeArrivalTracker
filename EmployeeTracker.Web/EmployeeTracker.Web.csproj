@@ -304,6 +304,7 @@
     <Content Include="Views\Employee\Subscribe.cshtml" />
     <Content Include="Views\Employee\Arrivals.cshtml" />
     <Content Include="Views\Employee\PostRequests.cshtml" />
+    <Content Include="Views\Employee\SubscriptionsHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
