@@ -19,6 +19,9 @@ namespace EmployeeTracker.Domain
         public static readonly string CALLBACK = "callback";
         #endregion
 
+        #region OTHER KEYS
+        public static readonly string FOURTH_TOKEN_KEY = "FOURTH_TOKEN";
+        #endregion
 
     }
 }

@@ -10,8 +10,8 @@ namespace EmployeeTracker.Web.Infrastructure
         public override void Load()
         {
             Bind<IArrivalsRepository>().To<DefaultArrivalsRepository>();
-            Bind<ITokenHelper>().To<SimpleTokenHelper>().InSingletonScope();
-            //Bind<ITokenHelper>().To<CacheTokenHelper>();
+            //Bind<ITokenHelper>().To<SimpleTokenHelper>().InSingletonScope();
+            Bind<ITokenHelper>().To<CacheTokenHelper>().InSingletonScope();
         }
     }
 }
