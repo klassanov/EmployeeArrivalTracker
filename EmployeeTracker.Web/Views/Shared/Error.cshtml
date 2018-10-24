@@ -5,9 +5,19 @@
     <title>Error</title>
 </head>
 <body>
-    <hgroup>
-        <h1>Error.</h1>
-        <h2>An error occurred while processing your request.</h2>
-    </hgroup>
+    <div class="errorMessages">
+        <h1>Error :(</h1>
+        <br />
+        <h3>Sorry, an error occurred while processing your request. Please consult the Errors.log file for more details.</h3>
+    </div>
+
+    @*<div>      
+        <span>
+            @Model.Exception
+        </span>       
+        <div style="display: none">
+            @Model.Exception.StackTrace
+        </div>
+    </div>*@
 </body>
 </html>

@@ -20,4 +20,13 @@ textarea {
     margin-top: 30px;
 }
 
+div.errorMessages *{
+    color:#151762;
+}
+
+div.errorMessages h1{
+    text-align:center;
+    font-size:100px;
+}
+
 
