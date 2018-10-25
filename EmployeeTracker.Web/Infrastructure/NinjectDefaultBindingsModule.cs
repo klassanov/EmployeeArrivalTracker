@@ -9,7 +9,7 @@ namespace EmployeeTracker.Web.Infrastructure
     {
         public override void Load()
         {
-            Bind<IArrivalsRepository>().To<DefaultArrivalsRepository>();
+            Bind<IEmployeeTrackerRepository>().To<DefaultEmployeeTrackerRepository>();
             //Bind<ITokenHelper>().To<SimpleTokenHelper>().InSingletonScope();
             Bind<ITokenHelper>().To<CacheTokenHelper>().InSingletonScope();
         }

@@ -15,7 +15,7 @@ namespace EmployeeTracker.Web.Controllers
 {
     public class EmployeeController : Controller
     {
-        private IArrivalsRepository repository;
+        private IEmployeeTrackerRepository repository;
         private ITokenHelper tokenHelper;
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace EmployeeTracker.Web.Controllers
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="tokenHelper"></param>
-        public EmployeeController(IArrivalsRepository repository, ITokenHelper tokenHelper)
+        public EmployeeController(IEmployeeTrackerRepository repository, ITokenHelper tokenHelper)
         {
             this.repository = repository;
             this.tokenHelper = tokenHelper;

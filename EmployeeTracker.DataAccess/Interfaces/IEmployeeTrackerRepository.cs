@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeTracker.DataAccess.Interfaces
 {
-    public interface IArrivalsRepository
+    public interface IEmployeeTrackerRepository
     {
         void WriteSubscriptionRequest(EmployeeArrivalSubscriptionGetRequest request);
         void WriteArrivalPostRequest(EmployeeArrivalPostRequest request, IEnumerable<EmployeeArrival> employeeArrivals);

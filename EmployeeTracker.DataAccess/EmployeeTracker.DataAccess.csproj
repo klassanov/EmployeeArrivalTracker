@@ -54,9 +54,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbContext\EmployeeArrivalsContext.cs" />
-    <Compile Include="Interfaces\IArrivalsRepository.cs" />
+    <Compile Include="Interfaces\IEmployeeTrackerRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\DefaultArrivalsRepository.cs" />
+    <Compile Include="Repositories\DefaultEmployeeTrackerRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EmployeeTracker.Domain\EmployeeTracker.Domain.csproj">

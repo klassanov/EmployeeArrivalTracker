@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace EmployeeTracker.DataAccess.Repositories
 {
-    public class DefaultArrivalsRepository : IArrivalsRepository
+    public class DefaultEmployeeTrackerRepository : IEmployeeTrackerRepository
     {
-        private static ILog logger = LogManager.GetLogger(typeof(DefaultArrivalsRepository));
+        private static ILog logger = LogManager.GetLogger(typeof(DefaultEmployeeTrackerRepository));
 
         public IEnumerable<T> GetAll<T>(Func<T, bool> wherePredicate=null) where T: class
         {
