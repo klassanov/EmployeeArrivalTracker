@@ -19,6 +19,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeTracker.Domain", "E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeTracker.DataAccess", "EmployeeTracker.DataAccess\EmployeeTracker.DataAccess.csproj", "{7E8AD336-39BB-4B6B-9D37-897D7B4B2462}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Comments", "Comments", "{979504AB-8C3C-4160-A026-7DDB4F70D723}"
+	ProjectSection(SolutionItems) = preProject
+		SomeComments.txt = SomeComments.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeTracker.Tests", "EmployeeTracker.Tests\EmployeeTracker.Tests.csproj", "{F7D5DC78-13DE-4404-85A7-7927CE4DF01C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SqlScripts", "SqlScripts", "{79975211-7D17-4FAF-AD08-6E5EBF2E104E}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\klassanov\Desktop\ClearTables.sql = C:\Users\klassanov\Desktop\ClearTables.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +57,10 @@ Global
 		{7E8AD336-39BB-4B6B-9D37-897D7B4B2462}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E8AD336-39BB-4B6B-9D37-897D7B4B2462}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E8AD336-39BB-4B6B-9D37-897D7B4B2462}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7D5DC78-13DE-4404-85A7-7927CE4DF01C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7D5DC78-13DE-4404-85A7-7927CE4DF01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7D5DC78-13DE-4404-85A7-7927CE4DF01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7D5DC78-13DE-4404-85A7-7927CE4DF01C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
