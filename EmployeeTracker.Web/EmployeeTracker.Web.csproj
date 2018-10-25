@@ -201,7 +201,6 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
-    <Compile Include="Controllers\ArrivalsController.cs" />
     <Compile Include="CustomFilters\LogExceptionAttribute.cs" />
     <Compile Include="CustomFilters\ProfileAllAttribute.cs" />
     <Compile Include="Global.asax.cs">

@@ -68,6 +68,12 @@ namespace EmployeeTracker.Web.Controllers
             return View(arrivalsList);
         }
 
+        public ViewResult ArrivalsById(int employeeId)
+        {
+            IEnumerable<EmployeeArrival> arrivalsList = repository.GetAll<EmployeeArrival>(x=>x.EmployeeId==employeeId);
+            return View("Arrivals",arrivalsList);
+        }
+
         public ViewResult PostRequests()
         {
             IEnumerable<EmployeeArrivalPostRequest> postRequests = repository.GetAll<EmployeeArrivalPostRequest>();
