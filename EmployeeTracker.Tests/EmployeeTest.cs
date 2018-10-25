@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using EmployeeTracker.DataAccess.Interfaces;
 using EmployeeTracker.Domain.Model;
 using EmployeeTracker.Web.Controllers;
@@ -17,40 +20,59 @@ namespace EmployeeTracker.Tests
         private Mock<IEmployeeTrackerRepository> repositoryMock;
         private Mock<ITokenHelper> tokenHelperMock;
 
-        private int employeesNumber;
+        private int employeesArrivalsNumber;
+        private int postRequestsNumber;
+        private int subscriptionRequestsNumber;
+
         private DateTime startDateTime;
         private List<EmployeeArrival> employeeArrivals;
+        private List<EmployeeArrivalPostRequest> postRequests;
+        private List<EmployeeArrivalSubscriptionGetRequest> subscriptionRequests;
 
         public EmployeeTest()
         {
-            Initialize();          
+            Initialize();
         }
 
         private void Initialize()
         {
             startDateTime = DateTime.Now;
-            employeesNumber = 10;
+            employeesArrivalsNumber = 10;
+            postRequestsNumber = 4;
+            subscriptionRequestsNumber = 1;
+
             employeeArrivals = new List<EmployeeArrival>();
-            for (int i = 0; i < employeesNumber; i++)
+            postRequests = new List<EmployeeArrivalPostRequest>();
+            subscriptionRequests = new List<EmployeeArrivalSubscriptionGetRequest>();
+
+            for (int i = 0; i < employeesArrivalsNumber; i++)
             {
-                employeeArrivals.Add(new EmployeeArrival {Id=i, EmployeeId=i, When=startDateTime.AddMinutes(1) });
+                employeeArrivals.Add(new EmployeeArrival { Id = i, EmployeeId = i, When = startDateTime.AddMinutes(1) });
+            }
+
+            for (int i = 0; i < postRequestsNumber; i++)
+            {
+                postRequests.Add(new EmployeeArrivalPostRequest { Id = i, TokenValue = Guid.NewGuid().ToString("N"), IsValid = i % 2 == 0 });
+            }
+
+            for (int i = 0; i < subscriptionRequestsNumber; i++)
+            {
+                subscriptionRequests.Add(new EmployeeArrivalSubscriptionGetRequest { Id = i, ResponseStatusCode = 200, DateParameter = startDateTime });
             }
 
             repositoryMock = new Mock<IEmployeeTrackerRepository>();
             repositoryMock.Setup(m => m.GetAll<EmployeeArrival>(null)).Returns(employeeArrivals);
+            //repositoryMock.Setup(m=>m.GetAll<EmployeeArrival>(It.Is<Func<EmployeeArrival, bool>>))
+            //customerRepository.Setup(m => m.GetById(It.IsAny<int>())).Returns<int>(customerId =>
+            //   customers.Where(x => x.Id == customerId).FirstOrDefault());
+
+            repositoryMock.Setup(m => m.GetAll<EmployeeArrivalPostRequest>(null)).Returns(postRequests);
+            repositoryMock.Setup(m => m.GetAll<EmployeeArrivalSubscriptionGetRequest>(null)).Returns(subscriptionRequests);
 
             tokenHelperMock = new Mock<ITokenHelper>();
             tokenHelperMock.Setup(m => m.CheckToken(It.IsAny<string>())).Returns(true);
         }
 
-
-        [TestMethod]
-        public void TestOfTheTest()
-        {
-            Assert.AreEqual(1, 1);
-        }
-
-      
         [TestMethod]
         public void Arrivals_Contains_All_EmployeeArrivals()
         {
@@ -58,15 +80,120 @@ namespace EmployeeTracker.Tests
             EmployeeController controller = new EmployeeController(repositoryMock.Object, tokenHelperMock.Object);
 
             //Act
-            ViewResult viewResult=controller.Arrivals();
+            ViewResult viewResult = controller.Arrivals();
             IEnumerable<EmployeeArrival> viewModel = viewResult.Model as IEnumerable<EmployeeArrival>;
 
             //Assert
             Assert.IsNotNull(viewModel);
-            Assert.AreEqual(viewModel.Count(), employeesNumber);
+            Assert.AreEqual(viewModel.Count(), employeesArrivalsNumber);
             Assert.AreEqual(viewModel.ElementAt(0).EmployeeId, 0);
-            Assert.AreEqual(viewModel.Last().EmployeeId, employeesNumber - 1);
+            Assert.AreEqual(viewModel.Last().EmployeeId, employeesArrivalsNumber - 1);
         }
-       
+
+        /*
+        [TestMethod]
+        public void ArrivalsById_Contains_Only_Filtered_Entities()
+        {
+            //Arrange
+            EmployeeController controller = new EmployeeController(repositoryMock.Object, tokenHelperMock.Object);
+
+            //Act
+            int employeeId = 3;
+            ViewResult viewResult = controller.ArrivalsById(employeeId);
+            IEnumerable<EmployeeArrival> viewModel = viewResult.Model as IEnumerable<EmployeeArrival>;
+        }
+        */
+
+        [TestMethod]
+        public void PostRequests_Contains_All_Entities()
+        {
+            //Arrange
+            EmployeeController controller = new EmployeeController(repositoryMock.Object, tokenHelperMock.Object);
+
+            //Act
+            ViewResult viewResult = controller.PostRequests();
+            IEnumerable<EmployeeArrivalPostRequest> viewModel = viewResult.Model as IEnumerable<EmployeeArrivalPostRequest>;
+
+            //Assert
+            Assert.IsNotNull(viewModel);
+            Assert.AreEqual(viewModel.Count(), postRequestsNumber);
+            Assert.AreEqual(viewModel.ElementAt(0).Id, 0);
+            Assert.AreEqual(viewModel.Last().Id, postRequestsNumber - 1);
+        }
+
+        [TestMethod]
+        public void SubscriptionsHistory_Contains_All_Entities()
+        {
+            //Arrange
+            EmployeeController controller = new EmployeeController(repositoryMock.Object, tokenHelperMock.Object);
+
+            //Act
+            ViewResult viewResult = controller.SubscriptionsHistory();
+            IEnumerable<EmployeeArrivalSubscriptionGetRequest> viewModel = viewResult.Model as IEnumerable<EmployeeArrivalSubscriptionGetRequest>;
+
+            //Assert
+            Assert.IsNotNull(viewModel);
+            Assert.AreEqual(viewModel.Count(), subscriptionRequestsNumber);
+            Assert.AreEqual(viewModel.ElementAt(0).Id, 0);
+            Assert.AreEqual(viewModel.Last().Id, subscriptionRequestsNumber - 1);
+        }
+
+        [TestMethod]
+        public void Subscribe_Can_Render_View()
+        {
+            //Arrange
+            EmployeeController controller = new EmployeeController(repositoryMock.Object, tokenHelperMock.Object);
+
+            //Act
+            ViewResult viewResult = controller.Subscribe();
+
+            //Assert
+            Assert.IsNotNull(viewResult);
+        }
+
+        /*
+        [TestMethod]
+        public async Task Subscribe_Can_Save_Valid_Request()
+        {
+            //Arrange
+            Mock<HttpRequestBase> postRequest = new Mock<HttpRequestBase>();
+            postRequest.SetupGet(x => x.Headers).Returns(
+                    new System.Net.WebHeaderCollection {
+                        {"X-Requested-With", "XMLHttpRequest"}
+                    });
+
+            EmployeeController controller = new EmployeeController(repositoryMock.Object, tokenHelperMock.Object);
+            EmployeeArrivalSubscriptionGetRequest subscriptionRequest = new EmployeeArrivalSubscriptionGetRequest();
+
+            //Act
+            await controller.Subscribe(request);
+
+        }
+        */
+
+        [TestMethod]
+        public void Post_Can_Save_Valid_Requests()
+        {
+            //Arrange
+            string token=Guid.NewGuid().ToString("N");
+            Mock<HttpRequestBase> webServicePostRequest = new Mock<HttpRequestBase>();
+            webServicePostRequest.SetupGet(x => x.Headers).Returns(
+                    new System.Net.WebHeaderCollection {
+                        {"X-Fourth-Token", token}
+                    });
+
+            var context = new Mock<HttpContextBase>();
+            context.SetupGet(x => x.Request).Returns(webServicePostRequest.Object);
+            EmployeeController controller = new EmployeeController(repositoryMock.Object, tokenHelperMock.Object);
+
+            //Act
+            controller.ControllerContext = new ControllerContext(context.Object, new RouteData(), controller);
+            controller.Post(employeeArrivals);
+
+            //Assert
+            repositoryMock.Verify(m => m.WriteArrivalPostRequest(It.Is<EmployeeArrivalPostRequest>(x => x.TokenValue == token), employeeArrivals));
+        }
+
+
     }
 }
