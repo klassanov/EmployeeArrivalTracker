@@ -14,5 +14,11 @@ namespace EmployeeTracker.Domain.Model
         public string TokenValue { get; set; }
         public bool IsValid { get; set; }
         public DateTime ReceiveDateTime { get; set; }
+
+        public EmployeeArrivalPostRequest()
+        {
+            ReceiveDateTime = DateTime.Now;
+            IsValid = false;
+        }
     }
 }

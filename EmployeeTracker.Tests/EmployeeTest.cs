@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -17,8 +18,8 @@ namespace EmployeeTracker.Tests
     [TestClass]
     public class EmployeeTest
     {
-        private Mock<IEmployeeTrackerRepository> repositoryMock;
-        private Mock<ITokenHelper> tokenHelperMock;
+        private Mock<IEmployeeTrackerRepository> repository;
+        private Mock<ITokenHelper> tokenHelper;
 
         private int employeesArrivalsNumber;
         private int postRequestsNumber;
@@ -60,24 +61,24 @@ namespace EmployeeTracker.Tests
                 subscriptionRequests.Add(new EmployeeArrivalSubscriptionGetRequest { Id = i, ResponseStatusCode = 200, DateParameter = startDateTime });
             }
 
-            repositoryMock = new Mock<IEmployeeTrackerRepository>();
-            repositoryMock.Setup(m => m.GetAll<EmployeeArrival>(null)).Returns(employeeArrivals);
+            repository = new Mock<IEmployeeTrackerRepository>();
+            repository.Setup(m => m.GetAll<EmployeeArrival>(null)).Returns(employeeArrivals);
             //repositoryMock.Setup(m=>m.GetAll<EmployeeArrival>(It.Is<Func<EmployeeArrival, bool>>))
             //customerRepository.Setup(m => m.GetById(It.IsAny<int>())).Returns<int>(customerId =>
             //   customers.Where(x => x.Id == customerId).FirstOrDefault());
 
-            repositoryMock.Setup(m => m.GetAll<EmployeeArrivalPostRequest>(null)).Returns(postRequests);
-            repositoryMock.Setup(m => m.GetAll<EmployeeArrivalSubscriptionGetRequest>(null)).Returns(subscriptionRequests);
+            repository.Setup(m => m.GetAll<EmployeeArrivalPostRequest>(null)).Returns(postRequests);
+            repository.Setup(m => m.GetAll<EmployeeArrivalSubscriptionGetRequest>(null)).Returns(subscriptionRequests);
 
-            tokenHelperMock = new Mock<ITokenHelper>();
-            tokenHelperMock.Setup(m => m.CheckToken(It.IsAny<string>())).Returns(true);
+            tokenHelper = new Mock<ITokenHelper>();
+            tokenHelper.Setup(m => m.CheckToken(It.IsAny<string>())).Returns(true);
         }
 
         [TestMethod]
         public void Arrivals_Contains_All_EmployeeArrivals()
         {
             //Arrange
-            EmployeeController controller = new EmployeeController(repositoryMock.Object, tokenHelperMock.Object);
+            EmployeeController controller = new EmployeeController(repository.Object, tokenHelper.Object);
 
             //Act
             ViewResult viewResult = controller.Arrivals();
@@ -108,7 +109,7 @@ namespace EmployeeTracker.Tests
         public void PostRequests_Contains_All_Entities()
         {
             //Arrange
-            EmployeeController controller = new EmployeeController(repositoryMock.Object, tokenHelperMock.Object);
+            EmployeeController controller = new EmployeeController(repository.Object, tokenHelper.Object);
 
             //Act
             ViewResult viewResult = controller.PostRequests();
@@ -125,7 +126,7 @@ namespace EmployeeTracker.Tests
         public void SubscriptionsHistory_Contains_All_Entities()
         {
             //Arrange
-            EmployeeController controller = new EmployeeController(repositoryMock.Object, tokenHelperMock.Object);
+            EmployeeController controller = new EmployeeController(repository.Object, tokenHelper.Object);
 
             //Act
             ViewResult viewResult = controller.SubscriptionsHistory();
@@ -142,7 +143,7 @@ namespace EmployeeTracker.Tests
         public void Subscribe_Can_Render_View()
         {
             //Arrange
-            EmployeeController controller = new EmployeeController(repositoryMock.Object, tokenHelperMock.Object);
+            EmployeeController controller = new EmployeeController(repository.Object, tokenHelper.Object);
 
             //Act
             ViewResult viewResult = controller.Subscribe();
@@ -175,25 +176,71 @@ namespace EmployeeTracker.Tests
         public void Post_Can_Save_Valid_Requests()
         {
             //Arrange
-            string token=Guid.NewGuid().ToString("N");
+            string token = Guid.NewGuid().ToString("N");
             Mock<HttpRequestBase> webServicePostRequest = new Mock<HttpRequestBase>();
             webServicePostRequest.SetupGet(x => x.Headers).Returns(
                     new System.Net.WebHeaderCollection {
-                        {"X-Fourth-Token", token}
+                        { ConfigurationManager.AppSettings["xFourthTokenHeader"], token}
                     });
 
             var context = new Mock<HttpContextBase>();
             context.SetupGet(x => x.Request).Returns(webServicePostRequest.Object);
-            EmployeeController controller = new EmployeeController(repositoryMock.Object, tokenHelperMock.Object);
+            EmployeeController controller = new EmployeeController(repository.Object, tokenHelper.Object);
 
             //Act
             controller.ControllerContext = new ControllerContext(context.Object, new RouteData(), controller);
             controller.Post(employeeArrivals);
 
             //Assert
-            repositoryMock.Verify(m => m.WriteArrivalPostRequest(It.Is<EmployeeArrivalPostRequest>(x => x.TokenValue == token), employeeArrivals));
+            repository.Verify(m => m.WriteArrivalPostRequest(It.Is<EmployeeArrivalPostRequest>(x => x.TokenValue == token), employeeArrivals));
         }
 
+        [TestMethod]
+        public void Post_Cant_Save_Requests_Without_Header()
+        {
+            //Arrange
+            string token = Guid.NewGuid().ToString("N");
+            Mock<HttpRequestBase> webServicePostRequest = new Mock<HttpRequestBase>();
+            webServicePostRequest.SetupGet(x => x.Headers).Returns(new System.Net.WebHeaderCollection());
+            Mock<HttpContextBase> context = new Mock<HttpContextBase>();
+            context.SetupGet(x => x.Request).Returns(webServicePostRequest.Object);
+            EmployeeController controller = new EmployeeController(repository.Object, tokenHelper.Object);
 
+            //Act
+            controller.ControllerContext = new ControllerContext(context.Object, new RouteData(), controller);
+            controller.Post(employeeArrivals);
+
+            //Assert           
+            repository.Verify(m => m.WriteArrivalPostRequest(It.IsAny<EmployeeArrivalPostRequest>(), null));
+        }
+
+        [TestMethod]
+        public void Post_Cant_Save_Employees_Arrivals_With_Invalid_Token()
+        {
+            //Arrange
+            string token = Guid.NewGuid().ToString("N");
+            Mock<HttpRequestBase> webServicePostRequest = new Mock<HttpRequestBase>();
+            webServicePostRequest.SetupGet(x => x.Headers).Returns(
+                    new System.Net.WebHeaderCollection {
+                        { ConfigurationManager.AppSettings["xFourthTokenHeader"], token}
+                    });
+
+            var context = new Mock<HttpContextBase>();
+            context.SetupGet(x => x.Request).Returns(webServicePostRequest.Object);
+
+            Mock<ITokenHelper> tokenHelperFail = new Mock<ITokenHelper>();
+            tokenHelperFail.Setup(m => m.CheckToken(It.IsAny<string>())).Returns(false);
+
+            EmployeeController controller = new EmployeeController(repository.Object, tokenHelperFail.Object);
+
+            //Act
+            controller.ControllerContext = new ControllerContext(context.Object, new RouteData(), controller);
+            controller.Post(employeeArrivals);
+
+            //Assert           
+            repository.Verify(m => m.WriteArrivalPostRequest(It.IsAny<EmployeeArrivalPostRequest>(), null));
+        }
+
+        //Test 
     }
 }

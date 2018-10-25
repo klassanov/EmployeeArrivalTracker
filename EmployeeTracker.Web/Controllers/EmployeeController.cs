@@ -127,18 +127,18 @@ namespace EmployeeTracker.Web.Controllers
         [HttpPost]
         public void Post(IEnumerable<EmployeeArrival> arrivals)
         {
-            string xFourthTokenHeader = ConfigurationManager.AppSettings["xFourthTokenHeader"];
-            string tokenValue = Request.Headers[xFourthTokenHeader];
-
-            EmployeeArrivalPostRequest postRequest = new EmployeeArrivalPostRequest
+            EmployeeArrivalPostRequest postRequest = new EmployeeArrivalPostRequest();
+            if (Request.Headers != null)
             {
-                ReceiveDateTime = DateTime.Now,
-                IsValid = tokenHelper.CheckToken(tokenValue),
-                TokenValue = tokenValue
-            };
-
-            if (!postRequest.IsValid)
-            {
+                string xFourthTokenHeader = ConfigurationManager.AppSettings["xFourthTokenHeader"];
+                string tokenValue = Request.Headers[xFourthTokenHeader];
+                if (tokenValue != null)
+                {
+                    postRequest.IsValid = tokenHelper.CheckToken(tokenValue);
+                    postRequest.TokenValue = tokenValue;                
+                }
+            }
+            if(!postRequest.IsValid){
                 arrivals = null;
             }
             repository.WriteArrivalPostRequest(postRequest, arrivals);
