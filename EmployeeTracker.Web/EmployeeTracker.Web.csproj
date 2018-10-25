@@ -209,6 +209,7 @@
     <Compile Include="Helpers\CacheTokenHelper.cs" />
     <Compile Include="Helpers\ITokenHelper.cs" />
     <Compile Include="Helpers\SimpleTokenHelper.cs" />
+    <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Infrastructure\NinjectDefaultBindingsModule.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
