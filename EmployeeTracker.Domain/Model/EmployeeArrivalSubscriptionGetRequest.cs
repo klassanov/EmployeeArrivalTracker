@@ -13,7 +13,7 @@ namespace EmployeeTracker.Domain.Model
         public int Id { get; set; }
 
         [Required]
-        [Display(Name ="Date")]
+        [Display(Name ="Subscription Date")]
         [DisplayFormat(DataFormatString ="dd-MM-yyyy")]
         public DateTime DateParameter { get; set; }
 

@@ -1,16 +1,16 @@
 ﻿@model EmployeeTracker.Domain.Model.EmployeeArrivalSubscriptionGetRequest
 
 @{
-    ViewBag.Title = "Subscribe";
+    ViewBag.Title = "Subscribtion";
 }
 
-<h2>Subscribe</h2>
+<h2>Subscribption</h2>
 
 
 @using (Html.BeginForm())
 {
     <div class="form-horizontal">
-        <h4>Subscribe to receive information about employees' arrivals for a date</h4>
+        <h4>Specify a date and subscribe to receive information about employees' arrivals for the specified date</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
        

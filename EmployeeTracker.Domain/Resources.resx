@@ -118,9 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="msg_subscription_not_successful" xml:space="preserve">
-    <value>Subscription not successful</value>
+    <value>Subscription not successful!</value>
   </data>
   <data name="msg_subscription_successful" xml:space="preserve">
-    <value>Subscription successful</value>
+    <value>Subscription successful! You have subscribed for {0}.</value>
   </data>
 </root>

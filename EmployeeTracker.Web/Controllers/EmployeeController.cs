@@ -62,7 +62,7 @@ namespace EmployeeTracker.Web.Controllers
                     tokenHelper.StoreToken(subscriptionToken);
                     subscriptionRequest.SubscriptionTokenValue = subscriptionToken.Token;
                     subscriptionRequest.SubscriptionTokenExpiryDate = subscriptionToken.Expires;
-                    ViewData[Constants.MESSAGE_SUCCESS_KEY] = Resources.msg_subscription_successful;
+                    ViewData[Constants.MESSAGE_SUCCESS_KEY] = string.Format(Resources.msg_subscription_successful, subscriptionRequest.DateParameter.ToString("dd-MMMM-yyyy"));
                 }
                 else
                 {

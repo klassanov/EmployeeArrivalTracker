@@ -61,7 +61,7 @@ namespace EmployeeTracker.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subscription not successful.
+        ///   Looks up a localized string similar to Subscription not successful!.
         /// </summary>
         public static string msg_subscription_not_successful {
             get {
@@ -70,7 +70,7 @@ namespace EmployeeTracker.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subscription successful.
+        ///   Looks up a localized string similar to Subscription successful! You have subscribed for {0}..
         /// </summary>
         public static string msg_subscription_successful {
             get {
