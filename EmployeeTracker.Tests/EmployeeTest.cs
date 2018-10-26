@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using EmployeeTracker.DataAccess.Interfaces;
+using EmployeeTracker.Domain;
 using EmployeeTracker.Domain.Model;
 using EmployeeTracker.Web.Controllers;
 using EmployeeTracker.Web.Helpers;
@@ -210,6 +211,56 @@ namespace EmployeeTracker.Tests
 
                 //Assert
                 httpTest.ShouldNotHaveCalled(StringHelper.CreateWebSericeSubscriptionRequestUrl(subscriptionRequest.DateParameter));
+                Assert.IsNotNull(viewResult.ViewData[Constants.MESSAGE_ERROR_KEY]);
+            }
+        }
+
+        [TestMethod]
+        public async Task Subscribe_Can_Save_Subscription_Response_Data()
+        {
+            //Arrange
+            DateTime dateParameter = new DateTime(1985, 7, 23);
+            string tokenValue = Guid.NewGuid().ToString("N");
+            EmployeeArrivalSubscriptionGetRequest subscriptionRequest = new EmployeeArrivalSubscriptionGetRequest()
+            {
+                DateParameter = dateParameter
+            };
+            SubscriptionToken subscriptionToken = new SubscriptionToken
+            {
+                Expires = DateTime.Now.AddDays(1),
+                Token = tokenValue
+            };
+
+            using (var httpTest = new HttpTest())
+            {
+                httpTest.RespondWith(JsonConvert.SerializeObject(subscriptionToken), 200);
+                EmployeeController controller = new EmployeeController(repository.Object, tokenHelper.Object);
+
+                //Act
+                ViewResult viewResult = await controller.Subscribe(subscriptionRequest);
+
+                //Assert
+                repository.Verify(m => m.WriteSubscriptionRequest(subscriptionRequest));
+                Assert.IsNotNull(viewResult.ViewData[Constants.MESSAGE_SUCCESS_KEY]);
+            }
+        }
+
+        [TestMethod]
+        public async Task Subscribe_Can_Handle_Unauthorized_Subscription_Response()
+        {
+            //Arrange
+            EmployeeArrivalSubscriptionGetRequest subscriptionRequest = new EmployeeArrivalSubscriptionGetRequest();
+            using (var httpTest = new HttpTest())
+            {
+                httpTest.RespondWith("unauthorized", 401);
+                EmployeeController controller = new EmployeeController(repository.Object, tokenHelper.Object);
+
+                //Act
+                ViewResult viewResult = await controller.Subscribe(subscriptionRequest);
+
+                //Assert
+                repository.Verify(m => m.WriteSubscriptionRequest(subscriptionRequest));
+                Assert.IsNotNull(viewResult.ViewData[Constants.MESSAGE_ERROR_KEY]);
             }
         }
 

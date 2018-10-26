@@ -153,7 +153,9 @@ namespace EmployeeTracker.Web.Controllers
         {
             string requestHeader = ConfigurationManager.AppSettings["ServiceRequestHeader"];
             string requestHeaderValue = ConfigurationManager.AppSettings["ServiceRequestHeaderValue"];
-            HttpResponseMessage response = await url.WithHeader(requestHeader, requestHeaderValue).GetAsync();
+            HttpResponseMessage response = await url.WithHeader(requestHeader, requestHeaderValue)
+                                                    .AllowAnyHttpStatus()
+                                                    .GetAsync();
             return response;
         }
     }
