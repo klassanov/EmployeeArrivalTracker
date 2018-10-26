@@ -22,6 +22,11 @@ namespace EmployeeTracker.Web.Helpers
             return cache[Constants.FOURTH_TOKEN_KEY] is SubscriptionToken token && token.Token.Equals(tokenValue);
         }
 
+        public SubscriptionToken GetToken()
+        {
+            return cache[Constants.FOURTH_TOKEN_KEY] as SubscriptionToken;
+        }
+
         public void StoreToken(SubscriptionToken subscriptionToken)
         {
             cache[Constants.FOURTH_TOKEN_KEY] = subscriptionToken;

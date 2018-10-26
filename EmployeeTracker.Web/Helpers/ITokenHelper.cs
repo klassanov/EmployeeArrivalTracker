@@ -9,6 +9,7 @@ namespace EmployeeTracker.Web.Helpers
 {
     public interface ITokenHelper
     {
+        SubscriptionToken GetToken();
         bool CheckToken(string tokenValue);
         void StoreToken(SubscriptionToken subscriptionToken);
     }

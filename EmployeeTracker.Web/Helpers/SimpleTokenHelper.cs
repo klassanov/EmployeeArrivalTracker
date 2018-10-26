@@ -15,6 +15,11 @@ namespace EmployeeTracker.Web.Helpers
             return subscriptionToken != null && subscriptionToken.Token.Equals(tokenValue);
         }
 
+        public SubscriptionToken GetToken()
+        {
+            return subscriptionToken;
+        }
+
         public void StoreToken(SubscriptionToken subscriptionToken)
         {
             this.subscriptionToken = subscriptionToken;
