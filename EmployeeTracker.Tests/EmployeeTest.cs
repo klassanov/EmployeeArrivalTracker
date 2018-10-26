@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -10,8 +11,10 @@ using EmployeeTracker.DataAccess.Interfaces;
 using EmployeeTracker.Domain.Model;
 using EmployeeTracker.Web.Controllers;
 using EmployeeTracker.Web.Helpers;
+using Flurl.Http.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
 
 namespace EmployeeTracker.Tests
 {
@@ -152,25 +155,37 @@ namespace EmployeeTracker.Tests
             Assert.IsNotNull(viewResult);
         }
 
-        /*
+        
         [TestMethod]
-        public async Task Subscribe_Can_Save_Valid_Request()
+        public async Task Subscribe_Can_Send_Subscription_Request()
         {
             //Arrange
-            Mock<HttpRequestBase> postRequest = new Mock<HttpRequestBase>();
-            postRequest.SetupGet(x => x.Headers).Returns(
-                    new System.Net.WebHeaderCollection {
-                        {"X-Requested-With", "XMLHttpRequest"}
-                    });
+            DateTime dateParameter = new DateTime(1985, 7, 23);
+            string tokenValue = Guid.NewGuid().ToString("N");
+            EmployeeArrivalSubscriptionGetRequest subscriptionRequest = new EmployeeArrivalSubscriptionGetRequest(){
+                DateParameter=dateParameter
+            };       
+            SubscriptionToken subscriptionToken = new SubscriptionToken{
+                Expires = DateTime.Now.AddDays(1),
+                Token = tokenValue
+            };
 
-            EmployeeController controller = new EmployeeController(repositoryMock.Object, tokenHelperMock.Object);
-            EmployeeArrivalSubscriptionGetRequest subscriptionRequest = new EmployeeArrivalSubscriptionGetRequest();
+            using (var httpTest = new HttpTest())
+            {
+                httpTest.RespondWith(JsonConvert.SerializeObject(subscriptionToken), 200);
+                EmployeeController controller = new EmployeeController(repository.Object, tokenHelper.Object);
 
-            //Act
-            await controller.Subscribe(request);
+                //Act
+                ViewResult viewResult=await controller.Subscribe(subscriptionRequest);
 
+                //Assert
+                httpTest.ShouldHaveCalled(StringHelper.CreateWebSericeSubscriptionRequestUrl(subscriptionRequest.DateParameter))
+                    .WithHeader(ConfigurationManager.AppSettings["ServiceRequestHeader"], ConfigurationManager.AppSettings["ServiceRequestHeaderValue"])
+                    .WithVerb(HttpMethod.Get)
+                    .Times(1);
+            }           
         }
-        */
+       
 
         [TestMethod]
         public void Post_Can_Save_Valid_Requests()
