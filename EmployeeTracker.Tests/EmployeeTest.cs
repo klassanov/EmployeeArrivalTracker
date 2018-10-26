@@ -61,15 +61,14 @@ namespace EmployeeTracker.Tests
                 subscriptionRequests.Add(new EmployeeArrivalSubscriptionGetRequest { Id = i, ResponseStatusCode = 200, DateParameter = startDateTime });
             }
 
+            //Mock the repository
             repository = new Mock<IEmployeeTrackerRepository>();
             repository.Setup(m => m.GetAll<EmployeeArrival>(null)).Returns(employeeArrivals);
-            //repositoryMock.Setup(m=>m.GetAll<EmployeeArrival>(It.Is<Func<EmployeeArrival, bool>>))
-            //customerRepository.Setup(m => m.GetById(It.IsAny<int>())).Returns<int>(customerId =>
-            //   customers.Where(x => x.Id == customerId).FirstOrDefault());
-
+            
             repository.Setup(m => m.GetAll<EmployeeArrivalPostRequest>(null)).Returns(postRequests);
             repository.Setup(m => m.GetAll<EmployeeArrivalSubscriptionGetRequest>(null)).Returns(subscriptionRequests);
 
+            //Mock the token helper
             tokenHelper = new Mock<ITokenHelper>();
             tokenHelper.Setup(m => m.CheckToken(It.IsAny<string>())).Returns(true);
         }
@@ -90,21 +89,22 @@ namespace EmployeeTracker.Tests
             Assert.AreEqual(viewModel.ElementAt(0).EmployeeId, 0);
             Assert.AreEqual(viewModel.Last().EmployeeId, employeesArrivalsNumber - 1);
         }
-
-        /*
+                      
         [TestMethod]
         public void ArrivalsById_Contains_Only_Filtered_Entities()
         {
             //Arrange
-            EmployeeController controller = new EmployeeController(repositoryMock.Object, tokenHelperMock.Object);
+            EmployeeController controller = new EmployeeController(repository.Object, tokenHelper.Object);
+
+            repository.Setup(m => m.GetAll<EmployeeArrival>(It.IsAny<Func<EmployeeArrival, bool>>()))
+                .Returns<Func<EmployeeArrival, bool>>(whereCondition => employeeArrivals.Where(whereCondition));
 
             //Act
             int employeeId = 3;
             ViewResult viewResult = controller.ArrivalsById(employeeId);
             IEnumerable<EmployeeArrival> viewModel = viewResult.Model as IEnumerable<EmployeeArrival>;
         }
-        */
-
+       
         [TestMethod]
         public void PostRequests_Contains_All_Entities()
         {
