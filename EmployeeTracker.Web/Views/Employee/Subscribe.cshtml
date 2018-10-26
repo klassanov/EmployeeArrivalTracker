@@ -4,13 +4,13 @@
     ViewBag.Title = "Subscribtion";
 }
 
-<h2>Subscribption</h2>
+<h2>Subscription</h2>
 
 
 @using (Html.BeginForm())
 {
     <div class="form-horizontal">
-        <h4>Specify a date and subscribe to receive information about employees' arrivals for the specified date</h4>
+        <h4>Specify a date and subscribe in order to receive information about employees arrivals for the specified date</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -44,7 +44,7 @@
                 @ViewData[EmployeeTracker.Domain.Constants.MESSAGE_SUCCESS_KEY]
             </div>
             <div>
-                @Html.ActionLink("See the employees arrivals", "Arrivals")
+                @Html.ActionLink("See employees arrivals", "Arrivals")
             </div>
         }
 
@@ -60,7 +60,11 @@
 }
 @section scripts{
     <script>
-        $("#datepicker").datepicker();
+        $("#datepicker").datepicker({
+            firstDay: 1,
+            changeMonth: true,
+            changeYear: true
+        });
         $("#datepicker").datepicker("option", "dateFormat", "dd-mm-yy");
 
         $("form").submit(function (event) {

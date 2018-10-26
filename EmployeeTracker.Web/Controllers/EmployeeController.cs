@@ -52,7 +52,7 @@ namespace EmployeeTracker.Web.Controllers
             if (ModelState.IsValid)
             {
                 string url = StringHelper.CreateWebSericeSubscriptionRequestUrl(subscriptionRequest.DateParameter);
-                subscriptionRequest.CallbackUrlParameter = url;
+                subscriptionRequest.CallbackUrlParameter = ConfigurationManager.AppSettings["applicationServiceCallbackUrl"];
                 HttpResponseMessage response = await GetServiceResponseMessage(url);
                 subscriptionRequest.ResponseStatusCode = (int)response.StatusCode;
 
