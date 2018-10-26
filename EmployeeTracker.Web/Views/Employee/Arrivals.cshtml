@@ -6,6 +6,18 @@
 
 <h2>Employees Arrivals</h2>
 
+<div>
+    @using (Html.BeginForm("ArrivalsById", "Employee", FormMethod.Get, new { @class = "form-inline" }))
+    {
+        <div class="form-group">
+            <input name="employeeId" type="number" class="form-control" placeholder="Search by Employee Id">
+        </div>
+        <button type="submit" class="btn btn-primary" id="submitButton">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </button>
+    }
+</div>
+
 <div class="userTableWrapper">
     <table class="table table-striped table-hover table-condensed table-bordered userInfoTable">
         <thead>
