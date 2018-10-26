@@ -3,6 +3,7 @@ using EmployeeTracker.Domain;
 using EmployeeTracker.Domain.Model;
 using EmployeeTracker.Web.Helpers;
 using Flurl.Http;
+using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -66,8 +67,8 @@ namespace EmployeeTracker.Web.Controllers
                 }
                 else
                 {
-                    ViewData[Constants.MESSAGE_ERROR_KEY] = string.Format("{0} Response: {1} {2}",
-                        Resources.msg_subscription_not_successful, response.StatusCode, response.ReasonPhrase);
+                    string reasonPhrase = string.Format(Resources.msg_response, response.ReasonPhrase);
+                    ViewData[Constants.MESSAGE_ERROR_KEY] = string.Format("{0} {1}", Resources.msg_subscription_not_successful, reasonPhrase);
                 }
                 repository.WriteSubscriptionRequest(subscriptionRequest);
             }

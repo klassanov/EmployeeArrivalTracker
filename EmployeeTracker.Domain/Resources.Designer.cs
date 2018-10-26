@@ -61,6 +61,15 @@ namespace EmployeeTracker.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Response: {0}.
+        /// </summary>
+        public static string msg_response {
+            get {
+                return ResourceManager.GetString("msg_response", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Subscription not successful!.
         /// </summary>
         public static string msg_subscription_not_successful {
