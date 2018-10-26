@@ -13,7 +13,7 @@ namespace EmployeeTracker.Tests
     public class HelpersTest
     {
         [TestMethod]
-        public void StringHelper_Generate_Valid_Url_For_Date()
+        public void StringHelper_Can_Generate_Valid_Url_For_Date()
         {
             //Arrange
             DateTime subscriptionDate = new DateTime(1985, 7, 23);

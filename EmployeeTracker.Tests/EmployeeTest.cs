@@ -154,10 +154,10 @@ namespace EmployeeTracker.Tests
             //Assert
             Assert.IsNotNull(viewResult);
         }
-
+        
         
         [TestMethod]
-        public async Task Subscribe_Can_Send_Subscription_Request()
+        public async Task Subscribe_Can_Send_Subscription_Request_With_Valid_Input_Data()
         {
             //Arrange
             DateTime dateParameter = new DateTime(1985, 7, 23);
@@ -185,7 +185,34 @@ namespace EmployeeTracker.Tests
                     .Times(1);
             }           
         }
-       
+
+        [TestMethod]
+        public async Task Subscribe_Cannot_Send_SubscriptionRequest_With_Invalid_Input_Data()
+        {
+            //Arrange
+            DateTime dateParameter = new DateTime(1985, 7, 23);
+            string tokenValue = Guid.NewGuid().ToString("N");
+            EmployeeArrivalSubscriptionGetRequest subscriptionRequest = new EmployeeArrivalSubscriptionGetRequest();
+            SubscriptionToken subscriptionToken = new SubscriptionToken
+            {
+                Expires = DateTime.Now.AddDays(1),
+                Token = tokenValue
+            };
+
+            using (var httpTest = new HttpTest())
+            {
+                httpTest.RespondWith(JsonConvert.SerializeObject(subscriptionToken), 200);
+                EmployeeController controller = new EmployeeController(repository.Object, tokenHelper.Object);
+                controller.ModelState.AddModelError("Data", "Data is required field");
+
+                //Act
+                ViewResult viewResult = await controller.Subscribe(subscriptionRequest);
+
+                //Assert
+                httpTest.ShouldNotHaveCalled(StringHelper.CreateWebSericeSubscriptionRequestUrl(subscriptionRequest.DateParameter));
+            }
+        }
+
 
         [TestMethod]
         public void Post_Can_Save_Valid_Requests()
