@@ -94,9 +94,9 @@ namespace EmployeeTracker.Web.Controllers
         /// </summary>
         /// <param name="employeeId"></param>
         /// <returns></returns>
-        public ViewResult ArrivalsById(int employeeId=0)
+        public ViewResult ArrivalsById(int? employeeId)
         {
-            IEnumerable<EmployeeArrival> arrivalsList = repository.GetAll<EmployeeArrival>(x => x.EmployeeId == employeeId);
+            IEnumerable<EmployeeArrival> arrivalsList = repository.GetAll<EmployeeArrival>(x => x.EmployeeId == employeeId || employeeId==null);
             return View("Arrivals", arrivalsList);
         }
 
